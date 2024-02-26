@@ -3,6 +3,6 @@ module com.example.pathfindingvisualizer {
     requires javafx.fxml;
 
 
-    opens com.example.pathfindingvisualizer to javafx.fxml;
-    exports com.example.pathfindingvisualizer;
+    opens com.pathfindingvisualizer to javafx.fxml;
+    exports com.pathfindingvisualizer;
 }
