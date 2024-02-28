@@ -4,12 +4,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Controller {
@@ -35,11 +33,13 @@ public class Controller {
         for (int i = 0; i < 1000; i++) {
             final int delay = i * 1; // Increment delay for each rectangle
             timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
-                mazeApplication.changeRectangleColorAndPopulateNodeList(rdn.nextInt(mazeApplication.GRID_SIZE),
-                        rdn.nextInt(mazeApplication.GRID_SIZE), Color.GRAY);
+                mazeApplication.changeRectangleColorAndPopulateObsticleNodeList(rdn.nextInt(mazeApplication.GRID_SIZE),
+                        rdn.nextInt(mazeApplication.GRID_SIZE), Color.GRAY); //bcs of using random there will be overlap
             }));
         }
+        timeline.setOnFinished(e -> {
+            mazeApplication.creatingGraphNodes(); //  will be called after all animations are done
+        });
         timeline.play();
-        mazeApplication.generateWeightedGraph();
     }
 }
