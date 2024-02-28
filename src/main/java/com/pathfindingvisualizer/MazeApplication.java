@@ -94,8 +94,6 @@ public class MazeApplication extends Application { // Make class public
         }
         generateDijkstra();
         addingEdgesToGraphNodes();
-        d.launch(this);
-
     }
 
     public void generateDijkstra() {

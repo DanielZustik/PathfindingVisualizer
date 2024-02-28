@@ -14,7 +14,7 @@
             xmlns:fx="http://javafx.com/fxml">
     <bottom>
         <HBox spacing="10">
-            <Button text="Start" prefWidth="90"/>
+            <Button fx:id="startBtn" onAction="#handleStartBtnAction" text="Start" prefWidth="90"/>
             <Button text="Stop" prefWidth="90"/>
             <Button fx:id="generateBtn" onAction="#handleGenerateBtnAction" text="Generate" prefWidth="90"/>
 

@@ -12,8 +12,18 @@
             this.nodeList = nodeList;
         }
 
+//        for (int i = 0; i < 1000; i++) {
+//            final int delay = i * 1; // Increment delay for each rectangle
+//            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
+//            }));
+//        }
+//
+//        timeline.play();
+
         public void launch (MazeApplication mazeApplication) {
             PriorityQueue<WeightedNode> queue = new PriorityQueue<>();
+            //        Timeline timeline = new Timeline();
+
             nodeList.getFirst().distance = 0;
             queue.addAll(nodeList);
             while (!queue.isEmpty()) {

@@ -12,7 +12,6 @@ import java.util.Random;
 
 public class Controller {
     private MazeApplication mazeApplication;
-
     public void setMazeApplication(MazeApplication mazeApplication) {
         this.mazeApplication = mazeApplication;
     }
@@ -26,6 +25,9 @@ public class Controller {
 
     @FXML
     private Button generateBtn;
+
+    @FXML
+    private Button startBtn;
     @FXML
     private void handleGenerateBtnAction() {
         Random rdn = new Random();
@@ -42,4 +44,16 @@ public class Controller {
         });
         timeline.play();
     }
+
+    @FXML
+    private void handleStartBtnAction() {
+        if (mazeApplication.d == null) {
+            System.out.println("Dijkstra instance is not initialized.");
+            return;
+        }
+        mazeApplication.d.launch(mazeApplication);
+    }
+
+
+
 }
