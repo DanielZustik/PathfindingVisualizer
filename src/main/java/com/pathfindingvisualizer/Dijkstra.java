@@ -1,21 +1,24 @@
     package com.pathfindingvisualizer;
 
+    import javafx.scene.paint.Color;
+
     import java.util.ArrayList;
     import java.util.PriorityQueue;
 
-    public class WeightedGraph {
+    public class Dijkstra {
         public ArrayList<WeightedNode> nodeList;
 
-        public WeightedGraph (ArrayList<WeightedNode> nodeList) {
+        public Dijkstra(ArrayList<WeightedNode> nodeList) {
             this.nodeList = nodeList;
         }
 
-        public void dijkstra (WeightedNode node) {
+        public void launch (MazeApplication mazeApplication) {
             PriorityQueue<WeightedNode> queue = new PriorityQueue<>();
-            node.distance = 0;
+            nodeList.getFirst().distance = 0;
             queue.addAll(nodeList);
             while (!queue.isEmpty()) {
                 WeightedNode currentNode = queue.remove(); //vyrazeni s prvku s minimalni hodnotou distance
+                mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.RED);
                 for (WeightedNode neighbor : currentNode.neighbors) {
                     if (queue.contains(neighbor)) { //jsou li nenavstivene
                         if (neighbor.distance > currentNode.distance + currentNode.weightMap.get(neighbor)) {

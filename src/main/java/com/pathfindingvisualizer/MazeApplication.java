@@ -23,9 +23,12 @@ public class MazeApplication extends Application { // Make class public
     ArrayList<WeightedNode> obsticleNodes = new ArrayList<>();
     ArrayList<WeightedNode> graphNodes = new ArrayList<>();
     HashMap<Integer, WeightedNode> nodeMapIDLookUp = new HashMap<>();
+    HashMap<Integer,Rectangle> rectangleMapIDLookUp = new HashMap<>();
 
 
-    WeightedGraph g;
+
+
+    Dijkstra d;
     int[][] grid = new int[GRID_SIZE][GRID_SIZE];
 
 
@@ -65,7 +68,7 @@ public class MazeApplication extends Application { // Make class public
     }
 
     public void changeRectangleColorAndPopulateObsticleNodeList(int row, int col, Color color) {
-        if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
+        if (!(row == 0 && col == 0)) { //when index is not 0,0... bcs its starting point of maze
             Rectangle rectangle = gridRectangles[row][col];
             rectangle.setFill(color);
             obsticleNodes.add(new WeightedNode(obsticleNodeID, row, col));
@@ -75,7 +78,7 @@ public class MazeApplication extends Application { // Make class public
         }
     }
 
-    public void creatingGraphNodes() {
+    public void creatingGraphNodesGraphAndEdges() {
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 if (grid[i][j] != -1) {
@@ -83,30 +86,48 @@ public class MazeApplication extends Application { // Make class public
                     WeightedNode newNode = new WeightedNode(graphNodeID, i, j);
                     graphNodes.add(newNode);
                     nodeMapIDLookUp.put(graphNodeID, newNode);
+                    rectangleMapIDLookUp.put(graphNodeID, gridRectangles[i][j]);
                     graphNodeID++;
                     System.out.print(graphNodeID + " ");
                 }
             }
         }
-        generateWeightedGraph();
+        generateDijkstra();
         addingEdgesToGraphNodes();
+        d.launch(this);
+
     }
 
-    public void generateWeightedGraph() {
-        g = new WeightedGraph(graphNodes);
+    public void generateDijkstra() {
+        d = new Dijkstra(graphNodes);
     }
 
     public void addingEdgesToGraphNodes() {
-        for (int i = 0; i < GRID_SIZE - 1; i++) {
-            for (int j = 0; j < GRID_SIZE - 1; j++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
                 if (grid[i][j] != -1) {
-                    if (grid[i + 1][j] != -1) {
+                    if (i < GRID_SIZE - 1 && grid[i + 1][j] != -1) { //-1 is obsticle
                         nodeMapIDLookUp.get(grid[i][j]).neighbors.add(nodeMapIDLookUp.get(grid[i + 1][j]));
-                    } else if (grid[i][j + 1] != -1) {
+                        nodeMapIDLookUp.get(grid[i][j]).weightMap.put(nodeMapIDLookUp.get(grid[i + 1][j]), 1);
+                    }
+                    if (j < GRID_SIZE - 1 && grid[i][j + 1] != -1) {
                         nodeMapIDLookUp.get(grid[i][j]).neighbors.add(nodeMapIDLookUp.get(grid[i][j + 1]));
+                        nodeMapIDLookUp.get(grid[i][j]).weightMap.put(nodeMapIDLookUp.get(grid[i][j + 1]), 1);//1 weight for every node
+                    }
+                    if (i > 0 && grid[i - 1][j] != -1) {
+                        nodeMapIDLookUp.get(grid[i][j]).neighbors.add(nodeMapIDLookUp.get(grid[i - 1][j]));
+                        nodeMapIDLookUp.get(grid[i][j]).weightMap.put(nodeMapIDLookUp.get(grid[i - 1][j]), 1);//1 weight for every node
+                    }
+                    if (j > 0 && grid[i][j - 1] != -1) {
+                        nodeMapIDLookUp.get(grid[i][j]).neighbors.add(nodeMapIDLookUp.get(grid[i][j - 1]));
+                        nodeMapIDLookUp.get(grid[i][j]).weightMap.put(nodeMapIDLookUp.get(grid[i][j - 1]), 1);//1 weight for every node
                     }
                 }
             }
         }
+    }
+
+    public HashMap<Integer, WeightedNode> getNodeMapIDLookUp() {
+        return nodeMapIDLookUp;
     }
 }

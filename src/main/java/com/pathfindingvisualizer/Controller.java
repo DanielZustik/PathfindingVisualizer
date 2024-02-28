@@ -38,7 +38,7 @@ public class Controller {
             }));
         }
         timeline.setOnFinished(e -> {
-            mazeApplication.creatingGraphNodes(); //  will be called after all animations are done
+            mazeApplication.creatingGraphNodesGraphAndEdges(); //  will be called after all animations are done
         });
         timeline.play();
     }
