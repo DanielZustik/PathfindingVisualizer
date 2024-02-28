@@ -10,16 +10,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.RadioButton?>
 <BorderPane fx:controller="com.pathfindingvisualizer.Controller"
             xmlns:fx="http://javafx.com/fxml">
-    <bottom>
-        <HBox spacing="10">
-            <Button text="Start" prefWidth="90"/>
-            <Button text="Stop" prefWidth="90"/>
-            <Button fx:id="generateBtn" onAction="#handleGenerateBtnAction" text="Generate" prefWidth="90"/>
+    <top>
+        <HBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets bottom="5" top="5"/>
+            </padding>
+            <Button fx:id="generateBtn" onAction="#handleGenerateBtnAction" text="Generate maze" prefWidth="110"/>
+            <Button text="Start searching" prefWidth="110"/>
+            <RadioButton text="BFS" fx:id="bfsRadioButton" toggleGroup="$algGroup" selected="true"/>
+            <RadioButton text="DFS" fx:id="dfsRadioButton" toggleGroup="$algGroup"/>
+            <RadioButton text="Djikstra" fx:id="djikstraRadioButton" toggleGroup="$algGroup"/>
+            <RadioButton text="A*" fx:id="aStarRadioButton" toggleGroup="$algGroup"/>
 
         </HBox>
-    </bottom>
+    </top>
     <center>
         <Pane fx:id="gridPlaceholder"/>
     </center>

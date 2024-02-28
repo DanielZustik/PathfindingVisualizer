@@ -14,6 +14,8 @@ public class MazeApplication extends Application { // Make class public
     public static final int GRID_SIZE = 100;
     public static final int CELL_SIZE = 5; // Adjust the size of each cell
     private Rectangle[][] gridRectangles = new Rectangle[GRID_SIZE][GRID_SIZE]; // Store references to rectangles
+    private int[][] mazeRectanglesIndexes = new int[GRID_SIZE][GRID_SIZE]; // Store indexes of maze
+
 
 
     public MazeApplication() {
@@ -49,10 +51,15 @@ public class MazeApplication extends Application { // Make class public
         launch(args);
     }
 
+    public Rectangle[][] getGridRectangles() {
+        return gridRectangles;
+    }
+
     public void changeRectangleColor(int row, int col, Color color) {
         if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
             Rectangle rectangle = gridRectangles[row][col];
             rectangle.setFill(color);
+            mazeRectanglesIndexes[row][col] = 1;
         }
     }
 }
