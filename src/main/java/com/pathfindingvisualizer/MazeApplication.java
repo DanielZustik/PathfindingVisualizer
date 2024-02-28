@@ -9,16 +9,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class MazeApplication extends Application { // Make class public
 
     public static final int GRID_SIZE = 100;
     public static final int CELL_SIZE = 5; // Adjust the size of each cell
     private Rectangle[][] gridRectangles = new Rectangle[GRID_SIZE][GRID_SIZE]; // Store references to rectangles
+    private int nodesID = 0;
+    ArrayList<WeightedNode> nodeList = new ArrayList<>();
+    WeightedGraph g;
+
+
 
 
     public MazeApplication() {
         super();
     }
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 
     @Override
     public void start (Stage primaryStage)  throws Exception {
@@ -43,16 +54,21 @@ public class MazeApplication extends Application { // Make class public
         primaryStage.setTitle("PathfinderInMatrixMaze");
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public void changeRectangleColor(int row, int col, Color color) {
+    public void changeRectangleColorAndPopulateNodeList(int row, int col, Color color) {
         if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
             Rectangle rectangle = gridRectangles[row][col];
             rectangle.setFill(color);
+            nodeList.add(new WeightedNode(nodesID, row, col));
+            nodesID++;
+            System.out.print(nodesID + " ");
         }
     }
+
+    public void generateWeightedGraph () {
+        g = new WeightedGraph(nodeList);
+    }
+
 }

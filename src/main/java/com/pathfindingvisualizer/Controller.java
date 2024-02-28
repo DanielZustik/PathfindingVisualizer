@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Controller {
@@ -32,12 +33,13 @@ public class Controller {
         Random rdn = new Random();
         Timeline timeline = new Timeline();
         for (int i = 0; i < 1000; i++) {
-            final int delay = i * 50; // Increment delay for each rectangle
+            final int delay = i * 1; // Increment delay for each rectangle
             timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
-                mazeApplication.changeRectangleColor(rdn.nextInt(mazeApplication.GRID_SIZE),
+                mazeApplication.changeRectangleColorAndPopulateNodeList(rdn.nextInt(mazeApplication.GRID_SIZE),
                         rdn.nextInt(mazeApplication.GRID_SIZE), Color.GRAY);
             }));
         }
         timeline.play();
+        mazeApplication.generateWeightedGraph();
     }
 }
