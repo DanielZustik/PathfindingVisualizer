@@ -12,22 +12,17 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MazeApplication extends Application { // Make class public
+public class MazeApplication extends Application {
 
     public static final int GRID_SIZE = 100;
     public static final int CELL_SIZE = 5; // Adjust the size of each cell
     private Rectangle[][] gridRectangles = new Rectangle[GRID_SIZE][GRID_SIZE]; // Store references to rectangles
     private int obsticleNodeID = 0;
     private int graphNodeID = 0;
-
     ArrayList<WeightedNode> obsticleNodes = new ArrayList<>();
     ArrayList<WeightedNode> graphNodes = new ArrayList<>();
     HashMap<Integer, WeightedNode> nodeMapIDLookUp = new HashMap<>();
     HashMap<Integer,Rectangle> rectangleMapIDLookUp = new HashMap<>();
-
-
-
-
     Dijkstra d;
     int[][] grid = new int[GRID_SIZE][GRID_SIZE];
 
@@ -71,7 +66,9 @@ public class MazeApplication extends Application { // Make class public
         if (!(row == 0 && col == 0)) { //when index is not 0,0... bcs its starting point of maze
             Rectangle rectangle = gridRectangles[row][col];
             rectangle.setFill(color);
-            obsticleNodes.add(new WeightedNode(obsticleNodeID, row, col));
+            WeightedNode w = new WeightedNode(obsticleNodeID, row, col);
+            w.distance = Integer.MAX_VALUE;
+            obsticleNodes.add(w);
             obsticleNodeID++;
             grid[row][col] = -1;
             //System.out.print(obsticleNodeID + " ");

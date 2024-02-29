@@ -1,6 +1,9 @@
     package com.pathfindingvisualizer;
 
+    import javafx.animation.KeyFrame;
+    import javafx.animation.Timeline;
     import javafx.scene.paint.Color;
+    import javafx.util.Duration;
 
     import java.util.ArrayList;
     import java.util.PriorityQueue;
@@ -21,14 +24,16 @@
 //        timeline.play();
 
         public void launch (MazeApplication mazeApplication) {
-            PriorityQueue<WeightedNode> queue = new PriorityQueue<>();
-            //        Timeline timeline = new Timeline();
+            Timeline timeline = new Timeline();
+            int delay = 0;
 
+            PriorityQueue<WeightedNode> queue = new PriorityQueue<>();
             nodeList.getFirst().distance = 0;
             queue.addAll(nodeList);
             while (!queue.isEmpty()) {
                 WeightedNode currentNode = queue.remove(); //vyrazeni s prvku s minimalni hodnotou distance
-                mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.RED);
+                creatingFrame(timeline, mazeApplication, currentNode, delay);
+                delay++;
                 for (WeightedNode neighbor : currentNode.neighbors) {
                     if (queue.contains(neighbor)) { //jsou li nenavstivene
                         if (neighbor.distance > currentNode.distance + currentNode.weightMap.get(neighbor)) {
@@ -46,6 +51,7 @@
                 pathPrint(nodeToCheck);
                 System.out.println();
             }
+            timeline.play();
         }
 
         public void addWeightedEdge (int i, int j, int d) {
@@ -60,5 +66,12 @@
                 pathPrint(node.parent);
             }
             System.out.print(node.id + " ");
+        }
+
+        public void creatingFrame (Timeline timeline, MazeApplication mazeApplication, WeightedNode currentNode,
+                                   int delay) {
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
+                    mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.RED);
+                }));
         }
     }

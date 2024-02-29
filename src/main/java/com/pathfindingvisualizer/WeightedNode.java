@@ -17,7 +17,7 @@ public class WeightedNode implements Comparable<WeightedNode>{
 
     public WeightedNode(int id, int index0, int index1) {
         this.id = id;
-        distance = Integer.MAX_VALUE;
+        distance = 100000;
         this.index0 = index0;
         this.index1 = index1;
 

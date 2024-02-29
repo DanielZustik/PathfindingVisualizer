@@ -32,11 +32,12 @@ public class Controller {
     private void handleGenerateBtnAction() {
         Random rdn = new Random();
         Timeline timeline = new Timeline();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 3900; i++) {
             final int delay = i * 1; // Increment delay for each rectangle
             timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
                 mazeApplication.changeRectangleColorAndPopulateObsticleNodeList(rdn.nextInt(mazeApplication.GRID_SIZE),
                         rdn.nextInt(mazeApplication.GRID_SIZE), Color.GRAY); //bcs of using random there will be overlap
+
             }));
         }
         timeline.setOnFinished(e -> {
