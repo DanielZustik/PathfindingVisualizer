@@ -15,14 +15,6 @@
             this.nodeList = nodeList;
         }
 
-//        for (int i = 0; i < 1000; i++) {
-//            final int delay = i * 1; // Increment delay for each rectangle
-//            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
-//            }));
-//        }
-//
-//        timeline.play();
-
         public void launch (MazeApplication mazeApplication) {
             Timeline timeline = new Timeline();
             int delay = 0;
@@ -32,24 +24,30 @@
             queue.addAll(nodeList);
             while (!queue.isEmpty()) {
                 WeightedNode currentNode = queue.remove(); //vyrazeni s prvku s minimalni hodnotou distance
-                creatingFrame(timeline, mazeApplication, currentNode, delay);
-                delay++;
-                for (WeightedNode neighbor : currentNode.neighbors) {
-                    if (queue.contains(neighbor)) { //jsou li nenavstivene
-                        if (neighbor.distance > currentNode.distance + currentNode.weightMap.get(neighbor)) {
-                            neighbor.distance = currentNode.distance + currentNode.weightMap.get(neighbor);
-                            neighbor.parent = currentNode;
-                            queue.remove(neighbor);
-                            queue.add(neighbor); //pouze za ucelem refreshe queue, jinak by pocital s puvodni hodnotou dist.
+                if (currentNode.endNode) {
+                    timeline.play();
+                    return;
+                }
+                if (currentNode.distance != Integer.MAX_VALUE){ //for not going to nodes that are unreachable
+                    creatingFrame(timeline, mazeApplication, currentNode, delay);
+                    delay++;
+                    for (WeightedNode neighbor : currentNode.neighbors) {
+                        if (queue.contains(neighbor)) { //jsou li nenavstivene
+                            if (neighbor.distance > currentNode.distance + currentNode.weightMap.get(neighbor)) {
+                                neighbor.distance = currentNode.distance + currentNode.weightMap.get(neighbor);
+                                neighbor.parent = currentNode;
+                                queue.remove(neighbor);
+                                queue.add(neighbor); //pouze za ucelem refreshe queue, jinak by pocital s puvodni hodnotou dist.
+                            }
                         }
                     }
                 }
-            }
 
-            for (WeightedNode nodeToCheck : nodeList) {
-                System.out.print("Node "+nodeToCheck+", distance: "+nodeToCheck.distance+", Path: ");
-                pathPrint(nodeToCheck);
-                System.out.println();
+//                for (WeightedNode nodeToCheck : nodeList) {
+//                    System.out.print("Node "+nodeToCheck+", distance: "+nodeToCheck.distance+", Path: ");
+//                    pathPrint(nodeToCheck);
+//                    System.out.println();
+//                }
             }
             timeline.play();
         }
@@ -74,4 +72,5 @@
                     mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.RED);
                 }));
         }
+
     }

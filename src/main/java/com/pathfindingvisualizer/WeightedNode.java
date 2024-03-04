@@ -12,15 +12,15 @@ public class WeightedNode implements Comparable<WeightedNode>{
     public boolean isVisited;
     public WeightedNode parent;
     public int distance;
-
+    public boolean endNode;
 
 
     public WeightedNode(int id, int index0, int index1) {
         this.id = id;
-        distance = 100000;
+        distance = Integer.MAX_VALUE;
         this.index0 = index0;
         this.index1 = index1;
-
+        endNode = false;
     }
 
 

@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class MazeApplication extends Application {
 
@@ -120,6 +121,17 @@ public class MazeApplication extends Application {
                 }
             }
         }
+    }
+
+    public void createEndNode () {
+        Random rnd = new Random();
+        int halfOfGridSize = GRID_SIZE / 2;
+        int i = rnd.nextInt(halfOfGridSize) + halfOfGridSize;
+        int j = rnd.nextInt(GRID_SIZE);
+        Rectangle endPointRectangle = gridRectangles[i][j];
+        WeightedNode endPointWeightedNode = nodeMapIDLookUp.get(grid[i][j]);
+        endPointRectangle.setFill(Color.BLUE);
+        endPointWeightedNode.endNode = true;
     }
 
     public HashMap<Integer, WeightedNode> getNodeMapIDLookUp() {

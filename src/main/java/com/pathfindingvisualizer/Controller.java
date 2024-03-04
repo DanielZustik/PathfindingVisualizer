@@ -33,17 +33,18 @@ public class Controller {
         Random rdn = new Random();
         Timeline timeline = new Timeline();
         for (int i = 0; i < 3900; i++) {
-            final int delay = i * 1; // Increment delay for each rectangle
+            final double delay = i * 0.2; // Increment delay for each rectangle
             timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
                 mazeApplication.changeRectangleColorAndPopulateObsticleNodeList(rdn.nextInt(mazeApplication.GRID_SIZE),
                         rdn.nextInt(mazeApplication.GRID_SIZE), Color.GRAY); //bcs of using random there will be overlap
 
             }));
         }
+        timeline.play();
         timeline.setOnFinished(e -> {
             mazeApplication.creatingGraphNodesGraphAndEdges(); //  will be called after all animations are done
+            mazeApplication.createEndNode();
         });
-        timeline.play();
     }
 
     @FXML

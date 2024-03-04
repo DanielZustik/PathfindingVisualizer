@@ -13,10 +13,15 @@
 <BorderPane fx:controller="com.pathfindingvisualizer.Controller"
             xmlns:fx="http://javafx.com/fxml">
     <bottom>
-        <HBox spacing="10">
-            <Button fx:id="startBtn" onAction="#handleStartBtnAction" text="Start" prefWidth="90"/>
-            <Button text="Stop" prefWidth="90"/>
-            <Button fx:id="generateBtn" onAction="#handleGenerateBtnAction" text="Generate" prefWidth="90"/>
+        <HBox spacing="10" alignment="CENTER" >
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button fx:id="startBtn" onAction="#handleStartBtnAction" text="Start" prefWidth="90" />
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button fx:id="generateBtn" onAction="#handleGenerateBtnAction" text="Generate" prefWidth="90" />
 
         </HBox>
     </bottom>
