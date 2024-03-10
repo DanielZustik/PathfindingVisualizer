@@ -9,7 +9,6 @@ public class WeightedNode implements Comparable<WeightedNode>{
     public int index1;
     public ArrayList<WeightedNode> neighbors = new ArrayList<>();
     public HashMap<WeightedNode, Integer> weightMap = new HashMap<>();
-    public boolean isVisited;
     public WeightedNode parent;
     public int distance;
     public boolean endNode;

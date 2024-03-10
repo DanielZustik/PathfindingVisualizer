@@ -6,16 +6,23 @@
     import javafx.util.Duration;
 
     import java.util.ArrayList;
+    import java.util.List;
     import java.util.PriorityQueue;
 
-    public class Dijkstra {
-        public ArrayList<WeightedNode> nodeList;
+    public class Dijkstra implements PathfindingAlgorithm{
+        private List<WeightedNode> nodeList;
+        private MazeApplication mazeApplication;
 
-        public Dijkstra(ArrayList<WeightedNode> nodeList) {
+
+        public Dijkstra(ArrayList<WeightedNode> nodeList, MazeApplication mazeApplication) {
+
             this.nodeList = nodeList;
+            this.mazeApplication = mazeApplication;
+
         }
 
-        public void launch (MazeApplication mazeApplication) {
+
+        public void launch () {
             Timeline timeline = new Timeline();
             int delay = 0;
 
@@ -26,6 +33,9 @@
                 WeightedNode currentNode = queue.remove(); //vyrazeni s prvku s minimalni hodnotou distance
                 if (currentNode.endNode) {
                     timeline.play();
+                    timeline.setOnFinished(e -> {
+                        drawShortestPath(currentNode);
+                    });
                     return;
                 }
                 if (currentNode.distance != Integer.MAX_VALUE){ //for not going to nodes that are unreachable
@@ -52,19 +62,19 @@
             timeline.play();
         }
 
-        public void addWeightedEdge (int i, int j, int d) {
-            WeightedNode first = nodeList.get(i);
-            WeightedNode second = nodeList.get(j);
-            first.neighbors.add(second);
-            first.weightMap.put(second, d);
-        }
+//        public void addWeightedEdge (int i, int j, int d) {
+//            WeightedNode first = nodeList.get(i);
+//            WeightedNode second = nodeList.get(j);
+//            first.neighbors.add(second);
+//            first.weightMap.put(second, d);
+//        }
 
-        public static void pathPrint(WeightedNode node) {
-            if (node.parent != null) {
-                pathPrint(node.parent);
-            }
-            System.out.print(node.id + " ");
-        }
+//        public static void pathPrint(WeightedNode node) {
+//            if (node.parent != null) {
+//                pathPrint(node.parent);
+//            }
+//            System.out.print(node.id + " ");
+//        }
 
         public void creatingFrame (Timeline timeline, MazeApplication mazeApplication, WeightedNode currentNode,
                                    int delay) {
@@ -73,4 +83,25 @@
                 }));
         }
 
+        public void drawShortestPath (WeightedNode currentNode) {
+            mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.GREEN);
+            if (currentNode.parent != null) {
+                drawShortestPath(currentNode.parent);
+            }
+        }
+
+        @Override
+        public void initialize(MazeApplication mazeApplication, List<WeightedNode> nodes) {
+
+        }
+
+        @Override
+        public void findPath() {
+
+        }
+
+        @Override
+        public List<WeightedNode> getPath() {
+            return null;
+        }
     }

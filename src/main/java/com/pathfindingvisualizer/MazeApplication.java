@@ -64,7 +64,7 @@ public class MazeApplication extends Application {
     }
 
     public void changeRectangleColorAndPopulateObsticleNodeList(int row, int col, Color color) {
-        if (!(row == 0 && col == 0)) { //when index is not 0,0... bcs its starting point of maze
+        if ((row > 5 || col > 5)) { //leaving empty space without obsticles for starting point
             Rectangle rectangle = gridRectangles[row][col];
             rectangle.setFill(color);
             WeightedNode w = new WeightedNode(obsticleNodeID, row, col);
@@ -95,7 +95,7 @@ public class MazeApplication extends Application {
     }
 
     public void generateDijkstra() {
-        d = new Dijkstra(graphNodes);
+        d = new Dijkstra(graphNodes, this);
     }
 
     public void addingEdgesToGraphNodes() {
@@ -126,12 +126,17 @@ public class MazeApplication extends Application {
     public void createEndNode () {
         Random rnd = new Random();
         int halfOfGridSize = GRID_SIZE / 2;
-        int i = rnd.nextInt(halfOfGridSize) + halfOfGridSize;
-        int j = rnd.nextInt(GRID_SIZE);
+        int i = rnd.nextInt(halfOfGridSize) + halfOfGridSize - 1;
+        int j = rnd.nextInt(GRID_SIZE - 1);
         Rectangle endPointRectangle = gridRectangles[i][j];
         WeightedNode endPointWeightedNode = nodeMapIDLookUp.get(grid[i][j]);
-        endPointRectangle.setFill(Color.BLUE);
-        endPointWeightedNode.endNode = true;
+        System.out.println("Trying to set end node at grid position: (" + i + ", " + j + ")");
+        if (nodeMapIDLookUp.get(grid[i][j]) == null) {
+            createEndNode();
+        } else {
+            endPointRectangle.setFill(Color.BLUE);
+            endPointWeightedNode.endNode = true;
+        }
     }
 
     public HashMap<Integer, WeightedNode> getNodeMapIDLookUp() {
