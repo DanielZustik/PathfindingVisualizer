@@ -12,40 +12,47 @@
     public class Dijkstra implements PathfindingAlgorithm{
         private List<WeightedNode> nodeList;
         private MazeApplication mazeApplication;
+        private List<WeightedNode> path = new ArrayList<>();
+        private List<AlgorithmStep> steps = new ArrayList<>();
+        private WeightedNode endNode;
 
-
-        public Dijkstra(ArrayList<WeightedNode> nodeList, MazeApplication mazeApplication) {
-
-            this.nodeList = nodeList;
-            this.mazeApplication = mazeApplication;
-
+        @Override
+        public void initialize(List<WeightedNode> nodes) {
+            this.nodeList = nodes;
         }
 
-
-        public void launch () {
-            Timeline timeline = new Timeline();
-            int delay = 0;
+        @Override
+        public void findPath() {
+//            Timeline timeline = new Timeline();
+//            int delay = 0;
 
             PriorityQueue<WeightedNode> queue = new PriorityQueue<>();
             nodeList.getFirst().distance = 0;
             queue.addAll(nodeList);
             while (!queue.isEmpty()) {
                 WeightedNode currentNode = queue.remove(); //vyrazeni s prvku s minimalni hodnotou distance
+                steps.add(new AlgorithmStep(AlgorithmStep.ActionType.VISIT, currentNode));
                 if (currentNode.endNode) {
-                    timeline.play();
-                    timeline.setOnFinished(e -> {
-                        drawShortestPath(currentNode);
-                    });
+                    endNode = currentNode;
+                    System.out.println("found end note");
+//                    timeline.play();
+//                    timeline.setOnFinished(e -> {
+//                        drawShortestPath(currentNode);
+//                    });
+//                    return;
                     return;
                 }
+                System.out.println("asd");
                 if (currentNode.distance != Integer.MAX_VALUE){ //for not going to nodes that are unreachable
-                    creatingFrame(timeline, mazeApplication, currentNode, delay);
-                    delay++;
+//                    creatingFrame(timeline, mazeApplication, currentNode, delay);
+//                    delay++;
                     for (WeightedNode neighbor : currentNode.neighbors) {
                         if (queue.contains(neighbor)) { //jsou li nenavstivene
                             if (neighbor.distance > currentNode.distance + currentNode.weightMap.get(neighbor)) {
+
                                 neighbor.distance = currentNode.distance + currentNode.weightMap.get(neighbor);
                                 neighbor.parent = currentNode;
+                                steps.add(new AlgorithmStep(AlgorithmStep.ActionType.EXPLORE, neighbor));
                                 queue.remove(neighbor);
                                 queue.add(neighbor); //pouze za ucelem refreshe queue, jinak by pocital s puvodni hodnotou dist.
                             }
@@ -59,7 +66,7 @@
 //                    System.out.println();
 //                }
             }
-            timeline.play();
+//            timeline.play();
         }
 
 //        public void addWeightedEdge (int i, int j, int d) {
@@ -76,32 +83,25 @@
 //            System.out.print(node.id + " ");
 //        }
 
-        public void creatingFrame (Timeline timeline, MazeApplication mazeApplication, WeightedNode currentNode,
-                                   int delay) {
-            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
-                    mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.RED);
-                }));
-        }
-
-        public void drawShortestPath (WeightedNode currentNode) {
-            mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.GREEN);
-            if (currentNode.parent != null) {
-                drawShortestPath(currentNode.parent);
-            }
-        }
-
-        @Override
-        public void initialize(MazeApplication mazeApplication, List<WeightedNode> nodes) {
-
-        }
-
-        @Override
-        public void findPath() {
-
-        }
+//        public void creatingFrame (Timeline timeline, MazeApplication mazeApplication, WeightedNode currentNode,
+//                                   int delay) {
+//            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
+//                    mazeApplication.rectangleMapIDLookUp.get(currentNode.id).setFill(Color.RED);
+//                }));
+//        }
 
         @Override
         public List<WeightedNode> getPath() {
-            return null;
+            List<WeightedNode> path = new ArrayList<>();
+            WeightedNode current = endNode;
+            while (current != null) {
+                path.add(0, current);
+                current = current.parent;
+            }
+            return path;
+        }
+        @Override
+        public List<AlgorithmStep> getSteps() {
+            return steps;
         }
     }

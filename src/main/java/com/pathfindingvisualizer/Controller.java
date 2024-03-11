@@ -8,6 +8,7 @@
     import javafx.scene.paint.Color;
     import javafx.util.Duration;
 
+    import java.util.List;
     import java.util.Random;
 
     public class Controller {
@@ -49,13 +50,33 @@
 
         @FXML
         private void handleStartBtnAction() {
-            if (mazeApplication.d == null) {
-                System.out.println("Dijkstra instance is not initialized.");
-                return;
-            }
-            mazeApplication.d.launch();
+            mazeApplication.startAlgorithmProcess();
+            mazeApplication.getPathfindingAlgorithm().findPath();
+            List<WeightedNode> path = mazeApplication.getPathfindingAlgorithm().getPath();
+            List<AlgorithmStep> steps = mazeApplication.getPathfindingAlgorithm().getSteps();
+            AlgorithmProcessAnimationUtil.animateAlgorithmSteps(mazeApplication, steps);
+            PathAnimationUtil.animatePath(mazeApplication, path);
         }
 
-
-
+//        public void creatingGraphNodesGraphAndEdges() {
+//            for (int i = 0; i < mazeApplication.GRID_SIZE; i++) {
+//                for (int j = 0; j < mazeApplication.GRID_SIZE; j++) {
+//                    if (HelperGridNodeIDsAndObctlicleAsMinusOne[i][j] != -1) {
+//                        HelperGridNodeIDsAndObctlicleAsMinusOne[i][j] = graphNodeID; //obsolete
+//
+//                        WeightedNode newNode = new WeightedNode(graphNodeID, i, j);
+//                        nodesGrid[i][j] = newNode;
+//                        graphNodes.add(newNode);
+//                        mappingNodesToRectangles.put(nodesGrid[i][j], gridRectanglesView[i][j]);
+//
+//                        nodeMapIDLookUp.put(graphNodeID, newNode); //obsolete
+//                        rectangleMapIDLookUp.put(graphNodeID, gridRectanglesView[i][j]); //obsolete
+//                        graphNodeID++; //obsolete
+//                        System.out.print(nodesGrid[i][j].index0 + " " + nodesGrid[i][j].index1 + ", ");
+//                    }
+//                }
+//            }
+//            addingEdgesToGraphNodes();
+//            startAlgorithmProcess();
+//        }
     }
